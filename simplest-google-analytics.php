@@ -55,16 +55,18 @@ function sga_render_tracking_script() {
 	$ga_tracking_id = get_option( 'sga_tracking_id', false );
 
 	if ( $ga_tracking_id ) {
-		echo "<!-- Google Analytics -->\n";
-		echo "<script>\n";
-		echo "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n";
-		echo "(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n";
-		echo "m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n";
-		echo "})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n";
-		echo "ga('create', '{$ga_tracking_id}', 'auto');\n"; // WPCS XSS:ok. Input sanitized and escaped by sga_ga_sanitize_cb.
-		echo "ga('send', 'pageview');\n";
-		echo "</script>\n";
-		echo "<!-- End Google Analytics -->\n";
+	?>
+		<!-- Simplest Google Analytics : BEGIN -->
+		<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+		ga('create', '<?php esc_attr_e( $ga_tracking_id ); ?>', 'auto');
+		ga('send', 'pageview');
+		</script>
+		<!-- Simplest Google Analytics : END -->
+	<?php
 	}
 }
 add_action( 'wp_head', 'sga_render_tracking_script' );
