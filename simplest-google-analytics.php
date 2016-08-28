@@ -34,7 +34,7 @@ function sga_settings_init() {
 	register_setting(
 		'general',
 		'sga_tracking_id',
-	 	'sga_sanitize_cb'
+		'sanitize_text_field'
 	);
 }
 add_action( 'admin_init', 'sga_settings_init' );
@@ -45,16 +45,6 @@ add_action( 'admin_init', 'sga_settings_init' );
 function sga_settings_cb() {
 	$ga_tracking_id = get_option( 'sga_tracking_id' );
 	echo "<input type='text' name='sga_tracking_id' value='{$ga_tracking_id}' />"; // WPCS XSS:ok. Input sanitized and escaped by sga_ga_sanitize_cb.
-}
-
-/**
- * Sanizize settings field.
- *
- * @param string $ga_tracking_id Google analytics tracking ID.
- */
-function sga_sanitize_cb( $ga_tracking_id ) {
-	$ga_tracking_id = sanitize_text_field( $ga_tracking_id );
-	return esc_attr( $ga_tracking_id );
 }
 
 /**
